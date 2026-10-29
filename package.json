@@ -1,0 +1,17 @@
+{
+  "name": "maso-3-kanban-vercel",
+  "version": "4.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "node scripts/verify.mjs",
+    "test": "node scripts/check.mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.3.0",
+    "nodemailer": "^7.0.10"
+  }
+}

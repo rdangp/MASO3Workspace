@@ -1,0 +1,32 @@
+/* Progressive task details for the prebuilt MASO3 frontend. No external dependencies. */
+(()=>{'use strict';
+ let snapshot=null,loading=null,identity=null,lastFetch=0;
+ const escape=s=>String(s??'');
+ async function data(force=false){if(!force&&snapshot&&Date.now()-lastFetch<12000)return snapshot;if(loading)return loading;loading=fetch('/api/workspace',{credentials:'same-origin',cache:'no-store'}).then(async r=>{if(!r.ok)throw Error('Unable to load task data');snapshot=await r.json();lastFetch=Date.now();return snapshot}).finally(()=>loading=null);return loading;}
+ function make(tag,klass,text){const e=document.createElement(tag);if(klass)e.className=klass;if(text!==undefined)e.textContent=text;return e;}
+ async function activate(panel){if(!panel.isConnected)return;try{
+  const d=await data(),form=panel.closest('form');if(!form)return;
+  const heading=form.querySelector('input[required]');const name=heading?.value?.trim();
+  const candidates=d.tasks.filter(t=>t.title===name&&t.id);const projectValue=form.querySelector('select[name=project_id]')?.value;const task=(projectValue?candidates.find(t=>t.project_id===projectValue):null)||(candidates.length===1?candidates[0]:null);if(!task){panel.textContent='Save the task first to view comments and additional assignees.';return;}
+  panel.dataset.taskId=task.id;
+  const comments=make('section','task-inline-comments'); const head=make('div','task-comments-heading'); const caption=make('strong','',`Comments`); const count=make('span','task-comment-count',String(task.comment_count||0)); head.append(caption,count);comments.append(head);
+  const history=make('div','task-comment-history');history.setAttribute('aria-live','polite');comments.append(history);
+  const input=make('textarea','task-comment-input');input.placeholder='Write a comment...';input.rows=2;input.maxLength=4000;
+  const submit=make('button','button secondary','Post comment');submit.type='button';
+  const actions=make('div','task-comment-actions');actions.append(input,submit);comments.append(actions);
+  const refresh=async()=>{try{const r=await fetch('/api/comments?task_id='+encodeURIComponent(task.id),{cache:'no-store'});const j=await r.json();if(!r.ok)throw Error(j.error||'Failed to load comments');history.replaceChildren();for(const c of j.messages){const a=make('div','task-comment-item');a.append(make('strong','',c.sender_name||c.sender),make('time','',new Date(c.created).toLocaleString()),make('p','',c.body));history.append(a)}count.textContent=String(j.messages.length);if(!j.messages.length)history.append(make('small','', 'No comments yet.'));}catch(err){history.textContent=String(err.message||err)}};
+  submit.onclick=async()=>{if(!input.value.trim())return;submit.disabled=true;try{const r=await fetch('/api/comments',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task_id:task.id,body:input.value.trim()})});const j=await r.json();if(!r.ok)throw Error(j.error||'Could not save comment');input.value='';await refresh();snapshot=null;}catch(e){alert(e.message)}finally{submit.disabled=false}};
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();submit.click()}});
+  await refresh();if(!panel.isConnected)return;panel.replaceChildren(comments);
+  const canManage=d.user?.email===task.owner_email||['admin','manager'].includes(d.user?.role);
+  if(canManage){const assign=make('section','task-extra-assignees');assign.append(make('strong','','Additional assignees'),make('p','', 'The task creator remains the first assignee. Select additional users below.'));
+   const current=new Set(Array.isArray(task.assignee_emails)?task.assignee_emails:[task.owner_email,task.assignee_email].filter(Boolean));
+   const inputs=[];for(const person of d.members){const label=make('label','task-assignee-choice');const check=document.createElement('input');check.type='checkbox';check.value=person.email;check.checked=current.has(person.email)||person.email===task.owner_email;check.disabled=person.email===task.owner_email;inputs.push(check);label.append(check,make('span','',person.name+' · '+person.email));assign.append(label)}
+   const save=make('button','button secondary','Save assignees');save.type='button';save.onclick=async()=>{save.disabled=true;try{const fresh=await data(true);const latest=fresh.tasks.find(t=>t.id===task.id);if(!latest)throw Error('Task no longer exists');const selected=[latest.owner_email,...inputs.filter(x=>x.checked).map(x=>x.value)];const b={...latest,assignee_emails:[...new Set(selected)],assignee_email:latest.owner_email,assignee:latest.assignee||'',action:'update'};
+     const r=await fetch('/api/tasks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});const j=await r.json();if(!r.ok)throw Error(j.error||'Unable to save assignees');snapshot=null;save.textContent='Saved';setTimeout(()=>{if(save.isConnected)save.textContent='Save assignees'},1500);
+    }catch(err){alert(err.message)}finally{save.disabled=false}};assign.append(save);panel.prepend(assign)}
+ }catch(e){if(panel.isConnected)panel.textContent=String(e.message||e)}}
+ function decorateCounts(){if(!document.querySelector('.task-card,.task-title-link'))return;data().then(d=>{for(const el of document.querySelectorAll('.task-card,.task-title-link')){const title=el.classList.contains('task-card')?el.querySelector('h3')?.textContent:el.textContent;const matches=d.tasks.filter(t=>t.title===title);if(matches.length!==1)continue;const t=matches[0];let badge=el.querySelector('.maso-comment-badge');if(!badge){badge=make('span','maso-comment-badge');if(el.classList.contains('task-card'))el.append(badge);else el.after(badge)}badge.textContent='☏ '+(t.comment_count||0);badge.title=(t.comment_count||0)+' comments';}}).catch(()=>{});}
+ function enhance(){if(!window.__masoCountPending){window.__masoCountPending=true;setTimeout(()=>{window.__masoCountPending=false;decorateCounts()},250)}document.querySelectorAll('.ruang-dialog form.editor-form').forEach(form=>{const commentButton=[...form.querySelectorAll('button')].find(b=>b.textContent.trim()==='Comments');if(!commentButton||form.querySelector('.task-inline-extra'))return;const panel=make('div','task-inline-extra','Loading comments...');commentButton.hidden=true;commentButton.after(panel);activate(panel)})}
+ let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;enhance()})}).observe(document.body,{subtree:true,childList:true});enhance();
+})();

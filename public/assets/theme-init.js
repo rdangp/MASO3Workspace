@@ -1,0 +1,1 @@
+(function(){var preference='system';try{preference=localStorage.getItem('maso3-appearance')||'system'}catch(e){}var theme=preference==='dark'||preference==='light'?preference:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=theme;})();

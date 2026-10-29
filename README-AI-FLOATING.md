@@ -1,0 +1,1 @@
+MASO3 floating AI assistant. Uses the existing Groq server API and authorized task data. Set GROQ_API_KEY in Vercel. AI queries may transmit permitted task titles, descriptions, status, due dates, and assignees to Groq. Chat is not stored in Blob. Please test on Preview before Production.\n

@@ -1,0 +1,1 @@
+MASO AI display update: Floating button and panel renamed MASO AI; Markdown asterisk markers stripped from AI responses while list asterisks become bullet characters. Raw model answers remain in conversation history.

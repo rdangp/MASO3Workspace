@@ -1,0 +1,1 @@
+MASO AI reminder badge: checks the existing permission-scoped /api/ai/reminders on login and every 60 seconds while the tab is visible; shows unread reminder count on the floating button; clears on opening AI chat. Reminder notifications appear only while the MASO3 webpage is open. No browser push or email service required.

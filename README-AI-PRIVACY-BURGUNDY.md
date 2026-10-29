@@ -1,0 +1,1 @@
+MASO AI privacy and dashboard chart update. AI receives only tasks owned, assigned, or explicitly shared with the logged-in user. Manager/Admin privileges do not widen AI context. The active-user roster is not forwarded to Groq. The introductory language instruction has been removed, and all custom Dashboard chart colors now use Burgundy shades.

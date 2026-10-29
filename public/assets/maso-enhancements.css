@@ -1,0 +1,301 @@
+/* MASO3 timeline and compact conversation interface */
+.timeline-page{margin:0;background:#f7f8fa;color:#243148;font-family:Inter,ui-sans-serif,system-ui,sans-serif}.timeline-layout{min-height:100vh;display:grid;grid-template-columns:235px minmax(0,1fr)}.timeline-side{background:#182334;color:#e5eaf3;padding:28px 17px;display:flex;flex-direction:column;gap:12px}.timeline-side a{color:inherit;text-decoration:none;padding:12px;border-radius:10px}.timeline-side a.timeline-active{background:#31445c}.timeline-brand{font-size:20px;font-weight:750;margin-bottom:30px}.timeline-brand span{color:#78d7c2}.timeline-side-label{font-size:10px;letter-spacing:2px;color:#a4b0bf;padding:12px}.timeline-side p{font-size:12px;line-height:1.6;color:#aab7c6;margin-top:24px}.timeline-main{padding:36px;max-width:1400px;min-width:0;width:100%;box-sizing:border-box;margin:auto}.timeline-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}.timeline-heading small{letter-spacing:2px;font-weight:700;color:#55848f}.timeline-heading h1{font-size:32px;margin:8px 0}.timeline-heading p{color:#738095}.timeline-back{color:#24768a;text-decoration:none}.timeline-controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:26px 0}.timeline-controls label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:700;color:#697489}.timeline-controls select,.timeline-controls input,.timeline-controls button{padding:11px 13px;border:1px solid #dfe4ed;border-radius:9px;background:white;color:#26364b;min-height:42px}.timeline-controls button{cursor:pointer}.timeline-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.timeline-stats div{background:white;padding:17px;border:1px solid #e7ebf1;border-radius:12px;display:flex;flex-direction:column;gap:6px}.timeline-stats b{font-size:26px}.timeline-stats span{color:#788496;font-size:12px}.timeline-calendar{background:#fff;border:1px solid #e5eaf0;border-radius:14px;overflow:hidden}.timeline-weekdays,.timeline-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.timeline-weekdays span{background:#f0f4f8;padding:14px 8px;text-align:center;font-size:12px;font-weight:700}.timeline-day{min-height:110px;padding:10px;border-top:1px solid #e6eaf0;border-right:1px solid #e6eaf0;overflow:hidden}.timeline-day.today{background:#f0faf7}.timeline-day.outside{background:#fafbfc}.timeline-day strong{font-size:12px}.timeline-event{font-size:11px;margin-top:6px;padding:5px;border-radius:5px;background:#e9effe;color:#36558b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.timeline-event.done{background:#ddf4e8;color:#176440}.timeline-event.review{background:#fff0ce;color:#86601c}.timeline-day small{font-size:10px;color:#778399}.timeline-upcoming{margin:25px 0;background:white;border:1px solid #e6eaf0;border-radius:13px;padding:20px}.timeline-upcoming h2{font-size:19px;margin:0 0 15px}.timeline-task{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:13px 0;border-bottom:1px solid #eff2f6}.timeline-task:last-child{border-bottom:0}.timeline-task>div{flex:1;min-width:0}.timeline-task strong,.timeline-task small{display:block}.timeline-task strong{font-size:13px}.timeline-task small,.timeline-task time{color:#7a8698;font-size:12px;margin-top:4px}.timeline-status{font-size:11px;border-radius:99px;padding:5px 9px;background:#e9eef8;white-space:nowrap}.timeline-status.done{background:#ddf4e8;color:#176440}.timeline-error{color:#b22}.timeline-empty{color:#7b8797}.maso-nav-timeline{display:flex!important;align-items:center;gap:10px;text-decoration:none;border-radius:9px;padding:12px 15px;font-size:13px;font-weight:600;color:inherit}.maso-nav-timeline:hover{background:rgba(120,140,170,.12)}.chat-panel{max-width:960px;margin:0 auto}.chat-panel>.edited-note,.conversation>.edited-note{display:none}.chat-panel>.chat-presence{display:flex;gap:6px;max-height:34px;overflow:auto;white-space:nowrap}.chat-panel>.chat-presence span{font-size:11px;padding:4px 8px}.conversation{border:1px solid var(--border,#e5e8ef);border-radius:13px;overflow:hidden;background:var(--surface,#fff)}.conversation .message-list{height:min(55vh,510px);min-height:270px;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:7px}.conversation .message{max-width:66%;width:fit-content;margin:0;padding:6px 9px;border-radius:10px;background:#f1f4f8;border:0}.conversation .message.mine{align-self:flex-end;background:#e2f4ef}.conversation .message header{display:flex;align-items:center;gap:7px;margin:0 0 2px}.conversation .message header strong{font-size:10px}.conversation .message header time{font-size:9px;opacity:.62}.conversation .message p{font-size:12px;line-height:1.35;margin:0;white-space:pre-wrap}.conversation .message-form{padding:10px 12px;display:flex;gap:10px;align-items:end;border-top:1px solid #e8ebf0}.conversation .message-form label{flex:1;font-size:0!important;min-width:0}.conversation .message-form textarea{min-height:40px!important;height:42px;resize:vertical;padding:10px 12px;line-height:1.3;margin:0!important}.conversation .message-form button{white-space:nowrap;min-height:40px}.conversation>.edited-note{display:none}@media(max-width:800px){.timeline-layout{display:block}.timeline-side{padding:12px;gap:4px}.timeline-side .timeline-side-label,.timeline-side p{display:none}.timeline-brand{margin:0;font-size:16px}.timeline-main{padding:18px}.timeline-heading h1{font-size:25px}.timeline-stats{grid-template-columns:repeat(2,1fr)}.timeline-day{min-height:75px;padding:5px}.timeline-event{font-size:9px}.timeline-weekdays span{font-size:10px}.timeline-task{flex-wrap:wrap}.conversation .message{max-width:82%;padding:6px 8px}}
+
+/* Chat composer repair: override legacy column form and intrinsic textarea sizing. */
+.conversation .message-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.conversation .message-form > label {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  width: auto;
+  gap: 0;
+  font-size: 0 !important;
+}
+.conversation .message-form textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 42px !important;
+  height: 42px;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 20px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+.conversation .message-form button {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  margin: 0;
+  min-height: 42px;
+}
+@media (max-width: 540px) {
+  .conversation .message-form { gap: 8px; padding: 10px; }
+  .conversation .message-form button { padding-inline: 12px; font-size: 12px; }
+}
+/* Avoid oversized message headers inherited from the general page header rules. */
+.conversation .message header {background:transparent; padding:0; border:0; min-height:0; width:auto;}
+
+/* WhatsApp-inspired compact chat (presentation only; message transport unchanged). */
+.conversation{background:#efeae2;border-color:#e0d9d2}
+.conversation .message-list{background:#efeae2;padding:14px 18px;gap:7px}
+.conversation .message{position:relative;align-self:flex-start;max-width:min(76%,520px);padding:7px 11px 19px;border-radius:9px 9px 9px 3px;background:#fff;color:#202c33;box-shadow:0 1px 1px rgba(0,0,0,.08);overflow-wrap:anywhere}
+.conversation .message.mine{align-self:flex-end;background:#d9fdd3;border-radius:9px 9px 3px 9px}
+.conversation .message header{display:block!important;margin:0 0 3px!important;padding:0!important;background:transparent!important;min-height:0!important;line-height:1.2}
+.conversation .message header strong{display:block;font-size:11px;line-height:1.25;color:#7b2543;font-weight:650}
+.conversation .message.mine header strong{display:none}
+.conversation .message header time{position:absolute;right:10px;bottom:5px;font-size:9px;line-height:1;color:#667781;opacity:.9;white-space:nowrap}
+.conversation .message p{margin:0!important;font-size:13px;line-height:1.4;color:inherit;white-space:pre-wrap}
+.conversation .message-form{background:#f6f6f6;border-top:1px solid #e4e1de;padding:10px 12px;gap:9px}
+.conversation .message-form textarea{background:#fff;border:1px solid #e5e5e5;border-radius:20px;min-height:42px!important;height:42px;padding:10px 15px}
+.conversation .message-form button{border-radius:22px;background:#7b2543;border-color:#7b2543}
+@media(max-width:540px){.conversation .message-list{padding:10px}.conversation .message{max-width:88%;padding:6px 9px 18px}}
+
+/* Project Timeline: burgundy in place of the previous blue accents. */
+.timeline-side{background:#391523;color:#fff1f5}
+.timeline-side a.timeline-active{background:#7b2543;color:#fff}
+.timeline-brand span{color:#dba2b5}
+.timeline-heading small,.timeline-back{color:#872747}
+.timeline-side-label{color:#d7adbb}
+.timeline-side p{color:#e0bfca}
+.timeline-controls button:hover{background:#f9ecf1;border-color:#ad5c77}
+.timeline-controls :is(select,input,button):focus-visible{outline:2px solid #872747;outline-offset:2px}
+.timeline-day.today{background:#fff2f6}
+.timeline-event{background:#f5dce6;color:#73213e}
+.timeline-event.review{background:#f9e7ed;color:#7b2543}
+.timeline-status{background:#f5dce6;color:#73213e}
+.timeline-task a{color:#872747}
+.timeline-upcoming a{color:#872747}
+.timeline-main a:hover{color:#a53259}
+
+/* FIX: override global header height and prevent tall, needle-thin chat bubbles. */
+.conversation .message-list {box-sizing:border-box;overflow-x:hidden;align-items:stretch;}
+.conversation .message-list>.message {display:block!important;flex:0 0 auto!important;width:max-content!important;min-width:180px;max-width:min(78%,520px)!important;height:auto!important;min-height:0!important;box-sizing:border-box;padding:8px 12px 20px!important;overflow:visible;word-break:normal;overflow-wrap:anywhere;}
+.conversation .message-list>.message.mine {align-self:flex-end!important;}
+.conversation .message-list>.message:not(.mine) {align-self:flex-start!important;}
+.conversation .message-list>.message>header {display:block!important;position:static!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0 0 4px!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;}
+.conversation .message-list>.message>header strong {display:block;margin:0;padding:0;font-size:11px;line-height:15px;}
+.conversation .message-list>.message>p {display:block;min-height:0;height:auto!important;margin:0!important;padding:0!important;font-size:13px;line-height:1.4;}
+.conversation .message-list>.message>header time {position:absolute!important;right:11px;bottom:6px;display:block!important;font-size:10px;line-height:1.15;}
+@media(max-width:540px){.conversation .message-list>.message{min-width:min(165px,65%);max-width:88%!important;}}
+
+/* Sidebar Timeline: match standard navigation font, weight, icon and spacing. */
+.sidebar nav a.maso-nav-timeline{display:flex!important;align-items:center;gap:12px;padding:11px 12px;border:0;border-radius:7px;background:transparent;text-align:left;color:#827176;text-decoration:none;font:inherit;font-size:14px;font-weight:400;letter-spacing:normal;line-height:normal;white-space:nowrap}
+.sidebar nav a.maso-nav-timeline:hover{background:#f6f1f2}
+.sidebar nav a.maso-nav-timeline svg{display:block;flex:0 0 19px;width:19px;height:19px}
+.sidebar nav a.maso-nav-timeline span{font-size:inherit;font-weight:inherit;line-height:inherit}
+html[data-theme=dark] .sidebar nav a.maso-nav-timeline{color:#bbb}
+html[data-theme=dark] .sidebar nav a.maso-nav-timeline:hover{background:#2e2e2e;color:#d5d5d5}
+
+/* Workspace route transition and asynchronous loading */
+#maso-nav-overlay{display:none;position:fixed;inset:0;z-index:99990;background:var(--surface,#fff);color:var(--text,#392b33);align-items:center;justify-content:center;flex-direction:column;gap:14px;font:inherit}
+#maso-nav-overlay strong{font-size:17px;font-weight:650}#maso-nav-overlay small{font-size:12px;color:#8b7480}
+html.maso-restoring-workspace #maso-nav-overlay{display:flex}
+.maso-loader-spin{display:inline-block;box-sizing:border-box;width:30px;height:30px;border:3px solid #ecd8df;border-top-color:#7b2543;border-radius:50%;animation:maso-spin .75s linear infinite;flex:none}
+@keyframes maso-spin{to{transform:rotate(360deg)}}
+#maso-api-progress{position:fixed;z-index:99999;left:0;right:0;top:0;height:3px;opacity:0;pointer-events:none;background:linear-gradient(90deg,transparent 0%,#7b2543 48%,transparent 100%);background-size:45% 100%;background-repeat:no-repeat;animation:maso-progress 1.2s ease-in-out infinite;transition:opacity .15s}
+html.maso-api-busy #maso-api-progress{opacity:1}
+@keyframes maso-progress{0%{background-position:-70% 0}100%{background-position:170% 0}}
+.timeline-loading{display:flex;gap:10px;align-items:center;margin:16px 0;color:#7b2543;font-size:13px}
+.timeline-loading .maso-loader-spin{width:18px;height:18px;border-width:2px}
+.timeline-loading[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){.maso-loader-spin,#maso-api-progress{animation-duration:2s}}
+
+/* MASO3 Burgundy sidebar and embedded project timeline */
+.ruang-app .sidebar{background:#641b38!important;color:#fff!important}
+.ruang-app .sidebar .nav-caption,.ruang-app .sidebar button,.ruang-app .sidebar .account-name,.ruang-app .sidebar .wordmark,.ruang-app .sidebar .project-nav{color:#fff}
+.ruang-app .sidebar nav button.active,.ruang-app .sidebar nav button:hover,.ruang-app .sidebar .maso-nav-timeline.timeline-active{background:#8d3656!important;color:#fff!important}
+.ruang-app .sidebar .maso-nav-timeline{color:#fff!important;font:inherit!important;font-size:14px!important;font-weight:400!important}
+.maso-inline-timeline{width:100%;min-height:calc(100vh - 80px);height:calc(100vh - 80px);border:0;display:block;background:#faf8f9}
+.main-content[hidden]{display:none!important}
+body:has(.maso-inline-timeline) .main-shell{min-width:0}
+body:has(.maso-inline-timeline) .timeline-side{display:none}
+
+/* Compact inline task comments and multi-assignee management */
+.task-inline-extra{display:grid;gap:12px;margin:14px 0;padding:14px;border:1px solid #ece3e8;border-radius:12px;background:#fcfafb}
+.task-inline-comments,.task-extra-assignees{display:grid;gap:8px}.task-comments-heading{display:flex;align-items:center;gap:10px}.task-comment-count{border-radius:20px;background:#f1e3e9;color:#76213d;padding:2px 8px;font-size:12px}.task-comment-history{max-height:240px;overflow:auto;display:grid;gap:8px}.task-comment-item{border-bottom:1px solid #eee2e8;padding:6px 0}.task-comment-item strong{font-size:12px}.task-comment-item time{font-size:11px;color:#8d7680;margin-left:10px}.task-comment-item p{font-size:13px;margin:3px 0!important;white-space:pre-wrap}.task-comment-actions{display:flex;gap:8px;align-items:flex-end}.task-comment-actions textarea{flex:1!important;min-width:0;min-height:56px}.task-comment-actions button{flex:none}.task-extra-assignees{border-bottom:1px solid #e8dfe3;padding-bottom:10px}.task-extra-assignees p{font-size:12px;margin:0}.task-assignee-choice{display:flex!important;flex-direction:row!important;align-items:center;gap:10px;font-size:12px}.task-assignee-choice input{width:auto!important}.task-inline-extra .button{width:max-content}
+
+.maso-comment-badge{display:inline-flex;align-items:center;gap:4px;margin:5px 0 2px;padding:2px 7px;border-radius:10px;color:#772742;background:#f4e9ed;font-size:11px;font-weight:600}.task-title-link+.maso-comment-badge{margin-left:8px}
+
+/* 2026-10-28 Sidebar contrast fix: all navigation text stays legible on Burgundy. */
+.ruang-app .sidebar, .ruang-app .sidebar nav button,
+.ruang-app .sidebar .maso-nav-timeline,
+.ruang-app .sidebar .project-nav button,
+.ruang-app .sidebar .project-nav button>span,
+.ruang-app .sidebar .nav-caption,
+.ruang-app .sidebar .account-name,
+.ruang-app .sidebar .wordmark,
+.ruang-app .sidebar .sidebar-bottom,
+.ruang-app .sidebar .sidebar-bottom button { color:#fff !important; }
+.ruang-app .sidebar nav button:hover,
+.ruang-app .sidebar nav button.active,
+.ruang-app .sidebar .maso-nav-timeline:hover,
+.ruang-app .sidebar .maso-nav-timeline.timeline-active {background:#943a60 !important;color:#fff !important;}
+.ruang-app .sidebar .project-nav button {background:transparent !important;}
+.ruang-app .sidebar .project-nav button:hover,
+.ruang-app .sidebar .project-nav button.selected {background:#a54468 !important;color:#fff !important;}
+.ruang-app .sidebar .project-nav button:hover *,
+.ruang-app .sidebar .project-nav button.selected *{color:#fff !important;}
+.ruang-app .sidebar .project-nav button:focus-visible{outline:2px solid #f7cbd9;outline-offset:1px;}
+.ruang-app .sidebar nav button>span {color:#f7dce6 !important;}
+.ruang-app .sidebar .project-nav button.selected {font-weight:600;}
+
+/* Burgundy sidebar / white icons and labels */
+.ruang-app .sidebar, .sidebar.maso-sidebar-custom {background:#641b38!important;color:#fff!important;}
+.sidebar.maso-sidebar-custom, .sidebar.maso-sidebar-custom *:not(input):not(select):not(option) {color:#fff!important;}
+.sidebar.maso-sidebar-custom button:hover,.sidebar.maso-sidebar-custom nav a:hover {background:#923957!important;color:#fff!important;}
+.sidebar.maso-sidebar-custom .project-nav button:hover,.sidebar.maso-sidebar-custom .project-nav button.selected {background:#a54468!important;color:#fff!important;}
+.sidebar.maso-sidebar-custom svg {stroke:#fff!important;color:#fff!important;}
+.sidebar.maso-sidebar-custom .sidebar-header svg,.sidebar.maso-sidebar-custom .brand svg{stroke:#fff!important;fill:none!important;}
+.sidebar.maso-sidebar-custom .maso-sidebar-toggle {position:absolute;right:8px;top:18px;z-index:3;display:flex;justify-content:center;align-items:center;width:28px;height:28px;border:1px solid #ffffff55;border-radius:7px;background:#ffffff14;color:#fff!important;cursor:pointer;font-size:16px;}
+.sidebar.maso-sidebar-custom{position:relative;transition:width .2s ease,min-width .2s ease;}
+.sidebar.maso-sidebar-custom .maso-smtp-menu{display:flex;gap:12px;align-items:center;width:100%;padding:11px 12px;border-radius:8px;color:#fff;background:transparent;border:0;text-align:left;font:inherit;cursor:pointer;}
+body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom{width:72px!important;min-width:72px!important;max-width:72px!important;padding-left:10px!important;padding-right:10px!important;overflow-x:hidden;}
+body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .maso-sidebar-toggle{position:relative;right:auto;top:auto;margin:0 auto 12px;flex:0 0 auto;}
+body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav button,body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav a,body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .maso-smtp-menu {font-size:0!important;justify-content:center!important;padding:11px 5px!important;}
+body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav button>span,body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav a>span,body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .maso-smtp-menu span,body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .project-nav,body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .sidebar-footer,body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom h1,body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom p {display:none!important;}
+body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom svg{flex-shrink:0;}
+.maso-smtp-backdrop{position:fixed;z-index:99999;inset:0;background:#1b1220a8;display:grid;place-items:center;padding:16px;}
+.maso-smtp-panel{position:relative;width:min(520px,100%);padding:28px;border-radius:14px;background:#fff;color:#232323;box-shadow:0 20px 80px #0004;font-family:inherit;}
+.maso-smtp-panel h2{margin:0 0 8px;font-size:22px}.maso-smtp-panel p{font-size:13px;line-height:1.6}.maso-smtp-muted{color:#6b6370}.maso-smtp-status{padding:12px;background:#f8edf2;color:#641b38;border-radius:8px;margin:14px 0}.maso-smtp-panel label{display:grid;gap:7px;font-size:13px}.maso-smtp-panel input{width:100%;box-sizing:border-box;padding:11px;border:1px solid #ccc;border-radius:8px;color:#222}.maso-smtp-panel form button{margin-top:12px;background:#641b38;color:white;border:0;border-radius:8px;padding:11px 16px;cursor:pointer}.maso-smtp-panel form button:disabled{opacity:.6}.maso-smtp-close{position:absolute;right:16px;top:12px;border:0;background:transparent;font-size:26px;cursor:pointer;color:#333}.maso-smtp-feedback{overflow-wrap:anywhere}
+
+/* Dashboard alignment and compact sidebar: fixes inherited flex shrink and desktop gap. */
+@media(min-width:761px){
+ .ruang-app>.main-shell{margin-left:248px!important;width:calc(100% - 248px)!important;max-width:none!important;min-width:0!important;box-sizing:border-box!important;}
+ .ruang-app .main-shell>.main-content{width:100%!important;max-width:none!important;margin:0!important;box-sizing:border-box!important;}
+ body.maso-sidebar-collapsed .ruang-app>.main-shell{margin-left:72px!important;width:calc(100% - 72px)!important;}
+}
+@media(min-width:761px) and (max-width:1200px){.ruang-app>.main-shell{margin-left:220px!important;width:calc(100% - 220px)!important;}}
+/* Make collapsed sidebar icon-only, without cramped inherited labels. */
+@media(min-width:761px){
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom{width:72px!important;padding:16px 9px!important;gap:8px!important;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .wordmark{width:45px;overflow:hidden;font-size:0!important;justify-content:center;padding:0!important;margin:0 auto!important;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .wordmark>span{display:flex!important;flex:0 0 auto;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .nav-caption,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .project-nav,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .theme-setting,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .team-note,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .account-name{display:none!important;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .sidebar-bottom{display:flex!important;gap:8px!important;margin-top:auto;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .sidebar-bottom>.button,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .sidebar-bottom .account{display:flex!important;width:48px!important;justify-content:center!important;padding:8px 4px!important;overflow:hidden;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .sidebar-bottom .account>.avatar,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .sidebar-bottom .account>button{display:none!important;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav{display:flex!important;flex-direction:column;gap:5px;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav button,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav a,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .maso-nav-timeline,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .maso-smtp-menu{display:flex!important;width:48px!important;min-width:48px!important;max-width:48px!important;height:44px!important;min-height:44px!important;overflow:hidden!important;white-space:nowrap!important;justify-content:flex-start!important;align-items:center!important;gap:0!important;padding:11px 15px!important;font-size:0!important;text-indent:-9999px!important;line-height:0!important;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav svg,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .maso-nav-timeline svg,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .maso-smtp-menu svg{display:block!important;flex:0 0 18px!important;min-width:18px!important;width:18px!important;height:18px!important;text-indent:0!important;}
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav button>span,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom nav a>span,
+ body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom .maso-smtp-menu span{display:none!important;}
+}
+@media(max-width:760px){body.maso-sidebar-collapsed .sidebar.maso-sidebar-custom{width:248px!important;max-width:248px!important;min-width:248px!important;padding:20px!important;}}
+/* Dashboard analytics */
+#maso-dashboard-analytics{margin:20px 0 24px;min-width:0;font-family:inherit;color:var(--text,#2b1820)}
+.maso-analytics-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px;flex-wrap:wrap}.maso-analytics-top h2{font-size:19px;margin:0 0 3px}.maso-analytics-top p{color:#907885;font-size:12px;margin:0}.maso-filter-reset{border:1px solid #d9bcc9;background:#fff;color:#762747;border-radius:8px;padding:9px 12px;cursor:pointer}
+.maso-dashboard-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:15px}.maso-dashboard-filters label{font-size:12px;color:#725e69;display:grid;gap:5px;min-width:0}.maso-dashboard-filters select{width:100%;min-width:0;box-sizing:border-box;border:1px solid #e2d5dd;background:#fff;color:#392a30;border-radius:8px;padding:10px}
+.maso-analytics-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.maso-analytics-kpis article{background:#fff;border:1px solid #e8dde2;border-radius:11px;padding:14px 16px;display:grid;gap:5px}.maso-analytics-kpis small{font-size:12px;color:#8c6878}.maso-analytics-kpis b{font-size:25px;color:#641b38}
+.maso-analytics-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.maso-analytics-charts section{min-width:0;background:#fff;border:1px solid #e8dde2;border-radius:12px;padding:16px 20px}.maso-analytics-charts section h3{font-size:14px;margin:0 0 14px}.maso-chart-bars{display:flex;align-items:end;gap:14px;justify-content:space-around;min-height:185px}.maso-bar-item{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:end;gap:5px;max-width:130px}.maso-bar-bg{height:120px;width:min(46px,80%);border-radius:6px;background:#f8f0f3;display:flex;align-items:end;overflow:hidden}.maso-bar-fill{width:100%;border-radius:6px 6px 0 0}.maso-bar-item strong{font-size:13px}.maso-bar-item small{font-size:11px;color:#826c78;text-align:center;min-height:28px}.maso-chart-wide{grid-column:1/-1}.maso-horizontal-row{display:grid;grid-template-columns:minmax(90px,1fr) 4fr 30px;gap:12px;align-items:center;margin:11px 0;font-size:12px}.maso-horizontal-row>span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.maso-horizontal-row>div{height:12px;background:#f3e6ec;border-radius:20px;overflow:hidden}.maso-horizontal-row i{display:block;height:100%;background:#8d3659;border-radius:20px}.maso-chart-empty{padding:18px;color:#89717d;font-size:13px}
+@media(max-width:950px){.maso-dashboard-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.maso-analytics-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.maso-analytics-charts{grid-template-columns:1fr}.maso-chart-wide{grid-column:auto}}
+@media(max-width:450px){.maso-dashboard-filters{grid-template-columns:1fr 1fr;gap:8px}.maso-analytics-charts section{padding:12px}.maso-horizontal-row{grid-template-columns:75px 1fr 25px}}
+
+/* Sidebar double-offset fix: sidebar must stay out of flex flow.
+   Previously .sidebar.maso-sidebar-custom{position:relative} caused its width
+   to be counted once by flex and again by main-shell margin-left. */
+.ruang-app .sidebar.maso-sidebar-custom {
+  position: fixed !important;
+  inset: 0 auto 0 0 !important;
+  box-sizing: border-box !important;
+}
+@media (min-width: 761px) {
+  .ruang-app > .main-shell {
+    flex: 0 0 auto !important;
+    margin-left: 248px !important;
+    width: calc(100% - 248px) !important;
+    min-width: 0 !important;
+  }
+  body.maso-sidebar-collapsed .ruang-app > .main-shell {
+    margin-left: 72px !important;
+    width: calc(100% - 72px) !important;
+  }
+}
+@media (min-width: 761px) and (max-width: 1200px) {
+  body:not(.maso-sidebar-collapsed) .ruang-app > .main-shell {
+    margin-left: 220px !important;
+    width: calc(100% - 220px) !important;
+  }
+}
+@media (max-width: 760px) {
+  .ruang-app > .main-shell { margin-left: 0 !important; width: 100% !important; }
+}
+
+/* Dark theme: neutral sidebar and charts, never white chart cards. */
+html[data-theme="dark"] .ruang-app .sidebar.maso-sidebar-custom{background:#141b28!important;border-right:1px solid #344054!important;}
+html[data-theme="dark"] .sidebar.maso-sidebar-custom :is(nav button,nav a,.maso-nav-timeline,.maso-smtp-menu):hover,
+html[data-theme="dark"] .sidebar.maso-sidebar-custom .project-nav button:hover,
+html[data-theme="dark"] .sidebar.maso-sidebar-custom .project-nav button.selected{background:#29354a!important;color:#f3f6fd!important;}
+html[data-theme="dark"] .sidebar.maso-sidebar-custom :is(nav button,nav a,.maso-nav-timeline).active,
+html[data-theme="dark"] .sidebar.maso-sidebar-custom [aria-current="page"]{background:#334155!important;color:#fff!important;}
+html[data-theme="dark"] #maso-dashboard-analytics{color:#e6eaf3!important;}
+html[data-theme="dark"] #maso-dashboard-analytics .maso-analytics-charts section,
+html[data-theme="dark"] #maso-dashboard-analytics .maso-analytics-kpis article{background:#1b2535!important;border-color:#364255!important;color:#e6eaf3!important;}
+html[data-theme="dark"] #maso-dashboard-analytics .maso-analytics-kpis b{color:#f6f8fc!important;}
+html[data-theme="dark"] #maso-dashboard-analytics .maso-chart-bars .maso-bar-bg,
+html[data-theme="dark"] #maso-dashboard-analytics .maso-horizontal-row>div{background:#344056!important;}
+html[data-theme="dark"] #maso-dashboard-analytics :is(.maso-chart-empty,.maso-analytics-top p,.maso-bar-item small,.maso-analytics-kpis small,.maso-dashboard-filters label){color:#adb9ce!important;}
+html[data-theme="dark"] #maso-dashboard-analytics :is(.maso-dashboard-filters select,.maso-filter-reset){background:#222f42!important;border-color:#42526a!important;color:#edf1f9!important;}
+/* AI assistant */
+.maso-ai-nav{display:flex;gap:10px;align-items:center;padding:11px 14px;width:100%;border:0;border-radius:9px;color:#fff!important;background:transparent;font:inherit;text-align:left;cursor:pointer}
+.maso-ai-nav:hover{background:#8c365b}html[data-theme="dark"] .maso-ai-nav:hover{background:#2c3950}
+.maso-ai-backdrop{position:fixed;inset:0;background:#0008;display:grid;place-items:center;padding:14px;z-index:999999}
+.maso-ai-panel{background:#fff;color:#253144;border-radius:15px;display:flex;flex-direction:column;width:min(680px,100%);height:min(75vh,660px);box-shadow:0 24px 72px #0005;overflow:hidden}
+.maso-ai-head{padding:15px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #dce1e8}
+.maso-ai-head button{border:0;background:transparent;color:inherit;font-size:24px;cursor:pointer}
+.maso-ai-messages{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:18px}
+.maso-ai-line{max-width:87%;white-space:pre-wrap;overflow-wrap:anywhere;background:#eef1f6;padding:10px 13px;border-radius:12px;line-height:1.55;font-size:13px;align-self:flex-start}
+.maso-ai-line.mine{align-self:flex-end;background:#e9d9e1}
+.maso-ai-form{display:flex;gap:8px;padding:12px;border-top:1px solid #dce1e8}
+.maso-ai-form textarea{flex:1;min-width:0;height:46px;resize:vertical;border:1px solid #cfd5df;border-radius:9px;padding:10px;color:inherit;background:transparent;font:inherit}
+.maso-ai-form button{border:0;border-radius:9px;background:#641b38;color:#fff;padding:0 18px;cursor:pointer}.maso-ai-form button:disabled{opacity:.5}
+html[data-theme="dark"] .maso-ai-panel{background:#172131;color:#e8eef7}html[data-theme="dark"] .maso-ai-head,html[data-theme="dark"] .maso-ai-form{border-color:#3b4960}html[data-theme="dark"] .maso-ai-line{background:#28364b;color:#f4f6fc}html[data-theme="dark"] .maso-ai-line.mine{background:#364662}html[data-theme="dark"] .maso-ai-form textarea{border-color:#47556a}html[data-theme="dark"] .maso-ai-form button{background:#475876}
+body.maso-sidebar-collapsed .maso-ai-nav{font-size:0!important;justify-content:center;padding:11px 5px}body.maso-sidebar-collapsed .maso-ai-nav span{display:none}
+
+/* Floating AI help widget; never rendered in left navigation. */
+.maso-ai-fab{position:fixed;bottom:23px;right:24px;z-index:99998;display:flex;align-items:center;gap:8px;padding:13px 17px;border:0;border-radius:30px;color:#fff;background:#641b38;box-shadow:0 8px 28px #0004;cursor:pointer;font-size:13px;font-weight:700}
+.maso-ai-fab[hidden]{display:none!important}
+.maso-ai-floating{position:fixed;right:24px;bottom:83px;z-index:99999;width:min(400px,calc(100vw - 28px));height:min(570px,calc(100dvh - 110px));box-shadow:0 12px 36px #0003;border-radius:16px;overflow:hidden}
+.maso-ai-floating .maso-ai-panel{height:100%;width:100%;border-radius:16px;box-shadow:none}
+.maso-ai-floating .maso-ai-messages{padding:14px;gap:9px}
+.maso-ai-footnote{padding:4px 12px 9px;font-size:10px;color:#768092;text-align:center}
+html[data-theme="dark"] .maso-ai-fab{background:#334155;color:#fff}
+html[data-theme="dark"] .maso-ai-footnote{color:#a6b3c8}
+@media(max-width:540px){.maso-ai-fab{right:12px;bottom:12px}.maso-ai-floating{right:10px;bottom:75px;width:calc(100vw - 20px);height:min(570px,calc(100dvh - 95px))}}
+
+/* Consistent Burgundy chart fills, including horizontal project bars. */
+#maso-dashboard-analytics .maso-horizontal-row i { background: #853351 !important; }
+#maso-dashboard-analytics .maso-bar-fill { filter: none !important; }
+
+/* Settings backup and Your Projects collapse */
+.maso-backup-menu{display:flex;align-items:center;gap:12px;width:100%;padding:11px 15px;border:0;background:transparent;color:#fff;cursor:pointer;text-align:left;font:inherit}.maso-backup-menu:hover{background:rgba(255,255,255,.15)}.maso-backup-backdrop{position:fixed;inset:0;background:#0008;display:grid;place-items:center;z-index:10000;padding:16px}.maso-backup-panel{position:relative;width:min(490px,100%);max-height:90vh;overflow:auto;background:var(--surface,#fff);color:var(--text,#20242c);border-radius:15px;padding:24px;box-shadow:0 15px 50px #0004}.maso-backup-panel h2{margin-top:0}.maso-backup-panel p{font-size:13px;line-height:1.6}.maso-backup-panel label{display:grid;gap:6px;margin:12px 0}.maso-backup-panel input{width:100%;padding:10px;box-sizing:border-box;border:1px solid #aaa;border-radius:7px}.maso-backup-panel button:not(.maso-backup-close){padding:10px 14px;border-radius:8px;border:0;background:#762143;color:white;cursor:pointer}.maso-backup-panel button:disabled{opacity:.5;cursor:not-allowed}.maso-backup-close{position:absolute;top:14px;right:16px;background:none;border:0;font-size:24px;cursor:pointer;color:inherit}.maso-projects-collapse{margin-left:auto;border:0;background:transparent;color:white;cursor:pointer;padding:4px 9px;font-size:18px}.maso-projects-closed > :not(:first-child){display:none!important}html[data-theme="dark"] .maso-backup-panel{background:#1b2535;color:#eef2f9}
+
+.project-caption .maso-projects-collapse{display:inline-flex;align-items:center;justify-content:center;font:inherit;font-size:19px;color:#fff}.project-nav[hidden]{display:none!important}
+
+/* MASO AI reminder notification badge */
+.maso-ai-fab{position:fixed;}
+.maso-ai-badge{position:absolute;top:-8px;right:-8px;display:flex;min-width:22px;height:22px;align-items:center;justify-content:center;padding:0 5px;border-radius:99px;background:#e13545;color:white;border:2px solid var(--surface,#fff);font:700 11px/1 system-ui,sans-serif;box-sizing:border-box;box-shadow:0 2px 8px rgba(0,0,0,.2);pointer-events:none;}
+html[data-theme="dark"] .maso-ai-badge{border-color:#172131;}
